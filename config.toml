@@ -1,0 +1,2 @@
+[containerd]
+socket_file = "/run/containerd/containerd.sock"

@@ -6,10 +6,21 @@ use containerd_client::{
         version_client::VersionClient
     }
 };
+use nanologger::{LogLevel, LoggerBuilder};
+use pounce_daemon::config::PounceConfig;
 
 #[tokio::main]
 async fn main() {
-    let channel = connect("/run/containerd/containerd.sock").await.unwrap();
+    // Logger
+    LoggerBuilder::new()
+        .thread_info(true)
+        .timestamps(true)
+        .level(LogLevel::Debug)
+        .init().unwrap();
+
+    let config = PounceConfig::new().unwrap();
+    
+    let channel = connect(&config.containerd.socket_file).await.unwrap();
 
     let mut client = VersionClient::new(channel);
     let resp = client.version(()).await.unwrap();

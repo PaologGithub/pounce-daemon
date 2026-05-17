@@ -1,2 +1,5 @@
+[main]
+node_cfg_file  = "node.toml"
+
 [containerd]
-socket_file = "/run/containerd/containerd.sock"
+socket_file    = "/run/containerd/containerd.sock"

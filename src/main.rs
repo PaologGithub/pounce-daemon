@@ -7,7 +7,7 @@ use containerd_client::{
     }
 };
 use nanologger::{LogLevel, LoggerBuilder};
-use pounce_daemon::config::PounceConfig;
+use pounce_daemon::config::{node::NodeConfig, pounce::PounceConfig};
 
 #[tokio::main]
 async fn main() {
@@ -19,6 +19,7 @@ async fn main() {
         .init().unwrap();
 
     let config = PounceConfig::new().unwrap();
+    let node_config = NodeConfig::new(&config.main.node_cfg_file).unwrap();
     
     let channel = connect(&config.containerd.socket_file).await.unwrap();
 

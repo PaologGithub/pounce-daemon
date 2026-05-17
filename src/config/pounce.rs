@@ -1,9 +1,10 @@
-use std::error::Error;
 use std::fs::{read_to_string, write};
 use std::path::Path;
 
 use nanologger::info;
 use serde::{Deserialize, Serialize};
+
+use crate::error::config::pounce::PounceConfigError;
 
 #[derive(Serialize, Deserialize)]
 pub struct PounceConfig {
@@ -35,7 +36,7 @@ impl Default for PounceConfig {
 }
 
 impl PounceConfig {
-    pub fn new() -> Result<Self, Box<dyn Error>> {
+    pub fn new() -> Result<Self, PounceConfigError> {
         let path = "config.toml";
 
         info!("Loading config `{}`", path);
@@ -44,11 +45,13 @@ impl PounceConfig {
             info!("Creating default `{}` file", path);
             let default = PounceConfig::default();
             let config = toml::to_string_pretty(&default)?;
-            write(path, config)?;
+            write(path, config)
+                .map_err(|e| PounceConfigError::WriteToFileFailed(e, path.to_string()))?;
             return Ok(default);
         }
 
-        let text = read_to_string(path)?;
+        let text = read_to_string(path)
+            .map_err(|e| PounceConfigError::ReadFromFileFailed(e, path.to_string()))?;
         let config = toml::from_str(&text)?;
         info!("Loaded config `{}`", path);
         Ok(config)

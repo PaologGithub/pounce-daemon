@@ -4,6 +4,7 @@ use std::path::Path;
 
 use nanologger::info;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use crate::error::config::node::NodeConfigError;
 
@@ -18,9 +19,10 @@ pub struct InstanceConfig {
 
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ServerConfig {
-
+    pub uuid: Uuid,
+    pub name: String
 }
 
 impl Default for NodeConfig {

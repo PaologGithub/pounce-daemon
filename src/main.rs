@@ -49,6 +49,10 @@ async fn main() {
 
     let config = PounceConfig::new().unwrap();
     let node_config = NodeConfig::new(&config.main.node_cfg_file).unwrap();
+
+    for server in node_config.servers {
+        println!("{}: {:?}", server.0, server.1);
+    }
     
     let channel = connect(&config.containerd.socket_file).await.unwrap();
 

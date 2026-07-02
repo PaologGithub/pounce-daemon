@@ -2,3 +2,4 @@
 
 
 [servers]
+03868b7f-cd31-4b31-b4c6-4f86529c2aa8 = { uuid = "03868b7f-cd31-4b31-b4c6-4f86529c2aa8", name = "Test Server" }
